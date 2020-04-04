@@ -80,7 +80,7 @@ def get_followers(driver):
             last_follower = waiter.find_element(driver, follower_css.format(follower_index))
             driver.execute_script("arguments[0].scrollIntoView();", last_follower)
     except TimeoutException as te:
-        print("done")
+        print("Completed for an ID")
         logging.info("Process Completed with TimeoutException!")
         logging.info(te)
     finally:

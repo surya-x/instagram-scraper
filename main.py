@@ -16,7 +16,7 @@ try:
         path = Sheet["A1"].value
     except:
         logging.error("Parameter.xlsx not found.")
-        print("Error Occurred!")
+        print("Error Occurred! | Parameter.xlsx not found ")
         sys.exit()
 
     if os.path.isdir(path)==False:

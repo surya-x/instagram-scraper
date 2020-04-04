@@ -1,6 +1,7 @@
 # Instagram-scraper
 
 This scraper is developed to scrap the followers of anyone using their Username.
+It will run by starting "main.py"
 
 It will work in the following steps :-
 1. It will log into instagram using username and password stored in credentials.xlsx
