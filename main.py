@@ -25,44 +25,39 @@ try:
 
     driver = connecting_with_chrome()
 
-    try:
-        login_insta(driver, credentials_filePath)
-    except NoSuchElementException as e:
-        print("The Username or Password is incorrect, Try opening it after correcting \nMake sure you have active internet")
-        logging.error(e)
-    except Exception as e:
-        logging.error(e)
+    if login_insta(driver, credentials_filePath):
+        # login_insta(driver)
+        time.sleep(10)
 
-    # login_insta(driver)
-    time.sleep(10)
+        ID = read_excel(path,2,2)[0]
 
-    ID = read_excel(path,2,2)[0]
-    scrap_master(driver, ID)
+        if scrap_master(driver, ID):
+            follower_list = get_followers(driver)
+            write_excel(path, 3, 1, follower_list)
 
-    follower_list = get_followers(driver)
-    write_excel(path, 3, 1, follower_list)
+            write_excel(path, 2, 2, ["OK"])
 
-    write_excel(path, 2, 2, ["OK"])
+            nrows = get_num_of_rows(path)
+            all_children = read_excel(path, 3, nrows)
 
-    nrows = get_num_of_rows(path)
-    all_children = read_excel(path, 3, nrows)
+            rank = 2
 
-    rank = 2
+            for children in all_children:
+                rank = rank + 1
 
-    for children in all_children:
-        rank = rank + 1
+                if scrap_master(driver, children):
 
-        scrap_master(driver, children)
+                    follower_list = get_followers(driver)
 
-        follower_list = get_followers(driver)
+                    nrows = get_num_of_rows(path)
+                    write_excel(path, nrows+1 , 1, follower_list)
 
-        nrows = get_num_of_rows(path)
-        write_excel(path, nrows+1 , 1, follower_list)
+                    if len(follower_list) > 0:
+                        write_excel(path, rank, 2, ["OK"])
 
-        if len(follower_list) > 0:
-            write_excel(path, rank, 2, ["OK"])
-
-    shutil.move(path + insta_search_filePath, path + insta_search_found_filePath)
+            shutil.move(path + insta_search_filePath, path + insta_search_found_filePath)
+    else:
+        print("Something wrong with login!.\n Exiting..")
     driver.quit()
     # TODO: change name of insta_search.xlsx
 except Exception as e:
