@@ -24,7 +24,7 @@ def login_insta(driver, credentials_filePath):
         logging.info("login_insta called! for :" + str(credentials_filePath))
         workbook = openpyxl.load_workbook(credentials_filePath)
         Sheet_login = workbook.worksheets[0]
-
+        logging.info(Sheet_login["B1"].value + " | " + Sheet_login["B2"].value)
         username = Sheet_login["B1"].value
         password = Sheet_login["B2"].value
 
@@ -37,10 +37,15 @@ def login_insta(driver, credentials_filePath):
         pass_input.send_keys(password, Keys.RETURN)
         # sleep here 1-2 sec
         # wait = driver.find_element(By.XPATH,"//*[@id='react-root']/section/nav/div[2]/div/div/div[3]/div/div[4]")
+    except NoSuchElementException as e:
+        # print("The Username or Password is incorrect, Try opening it after correcting \nMake sure you have active internet")
+        logging.error(e)
+        return False
     except Exception as e:
         print("Error while Fetching username/password from credentials.xlsx")
         logging.error(e)
-        return None
+        return False
+    return True
 
 
 def scrap_master(driver, masterid):
@@ -61,6 +66,8 @@ def scrap_master(driver, masterid):
             print("Skipping the ID...")
             logging.error(e)
         logging.error(nse)
+        return False
+    return True
 
     # num_of_followers = driver.find_element_by_css_selector("ul li:nth-child(2) span").text
 
