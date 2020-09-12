@@ -1,4 +1,5 @@
-# Instagram-scraper
+
+# Instagram scraper
 
 This scraper is developed to scrap the followers of anyone using their Username.
 It will run by starting "main.py"
